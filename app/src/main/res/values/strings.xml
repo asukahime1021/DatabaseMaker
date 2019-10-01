@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TestJdbc</string>
+    <string name="auto_connect">選択すると自動で接続します</string>
+    <string name="please_select">データベースを選択してください</string>
+    <string name="please_create">データベースがありません。新しく作成してください</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
