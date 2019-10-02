@@ -1,4 +1,4 @@
-package com.example.testjdbc
+package com.example.databasemaker
 
 import org.junit.Test
 

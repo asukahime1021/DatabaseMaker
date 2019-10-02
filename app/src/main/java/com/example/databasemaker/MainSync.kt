@@ -1,4 +1,4 @@
-package com.example.testjdbc
+package com.example.databasemaker
 
 import android.app.Activity
 import android.database.Cursor
@@ -7,8 +7,7 @@ import android.os.AsyncTask
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import com.example.testjdbc.openHelper.MainOpenHelper
-import com.example.testjdbc.openHelper.SubOpenHelper
+import com.example.databasemaker.openHelper.MainOpenHelper
 
 class MainSync(private val helper : MainOpenHelper, private val activity : Activity)
     : AsyncTask<String, Void, MutableList<String>>() {

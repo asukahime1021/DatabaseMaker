@@ -1,4 +1,4 @@
-package com.example.testjdbc.fragments.insert
+package com.example.databasemaker.fragments.insert
 
 import android.content.Context
 import android.net.Uri
@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.CheckResult
 
-import com.example.testjdbc.R
-import com.example.testjdbc.openHelper.SubOpenHelper
+import com.example.databasemaker.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

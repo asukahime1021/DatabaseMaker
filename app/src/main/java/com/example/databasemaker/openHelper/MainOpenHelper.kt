@@ -1,4 +1,4 @@
-package com.example.testjdbc.openHelper
+package com.example.databasemaker.openHelper
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

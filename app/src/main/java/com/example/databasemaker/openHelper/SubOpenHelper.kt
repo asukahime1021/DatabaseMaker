@@ -1,4 +1,4 @@
-package com.example.testjdbc.openHelper
+package com.example.databasemaker.openHelper
 
 import android.content.ContentValues
 import android.content.Context

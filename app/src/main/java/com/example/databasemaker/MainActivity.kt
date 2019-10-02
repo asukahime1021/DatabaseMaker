@@ -1,15 +1,12 @@
-package com.example.testjdbc
+package com.example.databasemaker
 
 import android.content.Intent
-import android.database.sqlite.SQLiteOpenHelper
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewParent
 import android.widget.*
-import com.example.testjdbc.openHelper.MainOpenHelper
-import com.example.testjdbc.openHelper.SubOpenHelper
+import com.example.databasemaker.openHelper.MainOpenHelper
+import com.example.databasemaker.openHelper.SubOpenHelper
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,6 +1,5 @@
-package com.example.testjdbc
+package com.example.databasemaker
 
-import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,11 +7,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
-import androidx.fragment.app.FragmentTransaction
-import com.example.testjdbc.common.createSpinner
-import com.example.testjdbc.fragments.insert.InsertFlagment
-import com.example.testjdbc.openHelper.SubOpenHelper
+import com.example.databasemaker.common.createSpinner
+import com.example.databasemaker.fragments.insert.InsertFlagment
+import com.example.databasemaker.openHelper.SubOpenHelper
 
 class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInteractionListener {
     val commands = listOf(

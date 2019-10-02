@@ -1,4 +1,4 @@
-package com.example.testjdbc.common
+package com.example.databasemaker.common
 
 import android.R
 import android.content.Context
