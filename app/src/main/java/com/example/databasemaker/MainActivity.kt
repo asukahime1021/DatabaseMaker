@@ -5,34 +5,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import com.example.databasemaker.common.createSpinner
+import com.example.databasemaker.interfaces.Syncable
 import com.example.databasemaker.openHelper.MainOpenHelper
 import com.example.databasemaker.openHelper.SubOpenHelper
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),Syncable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val mainHelper = MainOpenHelper(applicationContext)
-        MainSync(mainHelper, this).execute()
-
-        val spinner = findViewById<Spinner>(R.id.dbselect)
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if(position > 0){
-                    spinPush(parent, position)
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
+        SpinnerSync(mainHelper, this).execute()
 
         val newButton = findViewById<Button>(R.id.dbcreate)
         newButton.setOnClickListener {
@@ -66,4 +51,27 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onPostSync(result : MutableList<String>){
+        val tv = findViewById<TextView>(R.id.text1)
+        if (result!!.size > 0) {
+            // set database lists to this Activity's view
+            tv.text = "データベースを選択してください。"
+        } else {
+            // set empty to the same
+            tv.text = "データベースがありません。新しく作成してください。"
+        }
+    }
+
+    override fun setSpinnerList(result: MutableList<String>) {
+        createSpinner(applicationContext, findViewById(R.id.dbselect), result, object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position > 0){
+                    spinPush(parent, position)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        })
+    }
 }

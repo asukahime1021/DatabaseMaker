@@ -5,14 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.example.databasemaker.common.createSpinner
 import com.example.databasemaker.fragments.insert.InsertFlagment
+import com.example.databasemaker.interfaces.Syncable
 import com.example.databasemaker.openHelper.SubOpenHelper
 
-class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInteractionListener {
+class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInteractionListener,Syncable {
     val commands = listOf(
+        "作成",
         "検索",
         "挿入",
         "更新"
@@ -26,6 +26,7 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
 
         val dbName = DbConnect.dbName
         val helper = SubOpenHelper(applicationContext, dbName)
+        SpinnerSync(helper, this).execute()
 
         createSpinner(applicationContext, findViewById(R.id.commands), commands, object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -35,20 +36,13 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         })
+    }
 
-        val testtables = listOf<String>("t1", "t2", "t3")
-        val tableSpin = findViewById<Spinner>(R.id.tables)
-        val tableAdapterSpin = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, testtables)
-        tableAdapterSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        tableSpin.adapter = tableAdapterSpin
-        tableSpin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val frag = InsertFlagment.newInstance(dbName, testtables[position])
+    override fun setSpinnerList(result: MutableList<String>) {
+        if(result.isEmpty()) result.add("nothing")
+        createSpinner(applicationContext, findViewById(R.id.tables), result, object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val frag = InsertFlagment.newInstance(DbConnect.dbName, result[position])
                 val tran = supportFragmentManager.beginTransaction()
                 if(!fragmentOn)
                     tran.add(R.id.frag, frag)
@@ -60,7 +54,11 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-        }
+        })
+    }
+
+    override fun onPostSync(result: MutableList<String>) {
+
     }
 
     override fun onFragmentInteraction(uri: Uri) {

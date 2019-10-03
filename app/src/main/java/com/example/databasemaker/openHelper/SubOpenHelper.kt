@@ -10,7 +10,7 @@ class SubOpenHelper(context : Context, dbName : String?)
         : SQLiteOpenHelper(context, dbName, null, 1){
 
         companion object{
-            const val CREATE = "CREATE TABLE info_table (id INTEGER PRIMARY KEY AUTOINCREMENT, table_name TEXT)"
+            const val CREATE = "CREATE TABLE info_table (id INTEGER PRIMARY KEY AUTOINCREMENT, table_name TEXT, column_count INTEGER, memo TEXT)"
         }
 
         override fun onCreate(db: SQLiteDatabase?) {
