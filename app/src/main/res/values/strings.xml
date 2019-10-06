@@ -3,7 +3,13 @@
     <string name="auto_connect">選択すると自動で接続します</string>
     <string name="please_select">データベースを選択してください</string>
     <string name="please_create">データベースがありません。新しく作成してください</string>
+    <string name="search">検索</string>
+    <string name="create">作成</string>
+    <string name="insert">挿入</string>
+    <string name="delete">削除</string>
+    <string name="createTName">表の名前を入力してください</string>
+    <string name="createCName1">項目名を入力してください</string>
+    <string name="createCName2">項目名はカンマ区切りで複数入力できます</string>
+    <string name="execute">決定</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

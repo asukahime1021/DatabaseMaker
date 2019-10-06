@@ -7,25 +7,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 
 import com.example.databasemaker.R
+import com.example.databasemaker.executors.CreateTable
+import com.example.databasemaker.executors.Dummy
+import com.example.databasemaker.interfaces.CreateFragmentView
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "tName"
+private const val ARG_PARAM3 = "position"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [InsertFlagment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [InsertFlagment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class InsertFlagment : Fragment() {
 
     private var param1: String? = null
     private var tName: String? = null
+    private var position: Int = -1
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +34,7 @@ class InsertFlagment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             tName = it.getString(ARG_PARAM2)
+            position = it.getInt(ARG_PARAM3)
         }
     }
 
@@ -56,7 +55,7 @@ class InsertFlagment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException(context.toString() + "must implement OnFragmentInteractionListener")
         }
     }
 
@@ -67,49 +66,38 @@ class InsertFlagment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val command = when(position){
-//            0 -> "検索"
-//            1 -> "挿入"
-//            2 -> "更新"
-//            else -> ""
-//        }
+        val command : CreateFragmentView = when(position){
+            0 -> CreateTable(view)
+//            1 -> false
+//            2 -> false
+            else -> Dummy(view)
+        }
+
+        command.createView()
+
+        val execButton = view.findViewById<Button>(R.id.execute)
+        execButton.setOnClickListener {
+            view.findViewById<TextView>(R.id.insert).text = "pressed"
+        }
 
         view.findViewById<TextView>(R.id.insert).text = "$param1 : $tName"
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment InsertFlagment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(param1: String, tName : String) =
+        fun newInstance(param1: String, tName : String, position : Int) =
             InsertFlagment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, tName)
+                    putInt(ARG_PARAM3, position)
                 }
             }
     }

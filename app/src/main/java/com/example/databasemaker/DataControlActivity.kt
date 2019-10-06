@@ -28,6 +28,11 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
         val helper = SubOpenHelper(applicationContext, dbName)
         SpinnerSync(helper, this).execute()
 
+        /*
+        TODO:
+        テーブル作成についてはテーブル名を選ばせてはいけない
+        作成は「作成」選択時に作成画面を出し、他のコマンドはテーブル選択で画面表示にする。
+         */
         createSpinner(applicationContext, findViewById(R.id.commands), commands, object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedCommand = position
@@ -38,11 +43,14 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
         })
     }
 
+    /**
+     * set table_list
+     */
     override fun setSpinnerList(result: MutableList<String>) {
         if(result.isEmpty()) result.add("nothing")
         createSpinner(applicationContext, findViewById(R.id.tables), result, object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val frag = InsertFlagment.newInstance(DbConnect.dbName, result[position])
+                val frag = InsertFlagment.newInstance(DbConnect.dbName, result[position], selectedCommand)
                 val tran = supportFragmentManager.beginTransaction()
                 if(!fragmentOn)
                     tran.add(R.id.frag, frag)
