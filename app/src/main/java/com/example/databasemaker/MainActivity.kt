@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(),Syncable {
     }
 
     override fun setSpinnerList(result: MutableList<String>) {
-        createSpinner(applicationContext, findViewById(R.id.dbselect), result, object : AdapterView.OnItemSelectedListener{
+        createSpinner(applicationContext, view = findViewById(R.id.dbselect), objects = result, listener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(position > 0){
                     spinPush(parent, position)

@@ -24,6 +24,13 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/forAddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
         <Button
             android:id="@+id/execute"
             android:layout_width="wrap_content"

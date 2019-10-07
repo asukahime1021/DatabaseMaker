@@ -9,19 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.example.databasemaker.DbConnect
 
 import com.example.databasemaker.R
 import com.example.databasemaker.executors.CreateTable
 import com.example.databasemaker.executors.Dummy
-import com.example.databasemaker.interfaces.CreateFragmentView
+import com.example.databasemaker.interfaces.CreateControlView
+import com.example.databasemaker.openHelper.SubOpenHelper
 
-private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM1 = "dbName"
 private const val ARG_PARAM2 = "tName"
 private const val ARG_PARAM3 = "position"
 
 class InsertFlagment : Fragment() {
 
-    private var param1: String? = null
+    private var dbName: String? = null
     private var tName: String? = null
     private var position: Int = -1
     private var listener: OnFragmentInteractionListener? = null
@@ -29,10 +31,8 @@ class InsertFlagment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            dbName = it.getString(ARG_PARAM1)
             tName = it.getString(ARG_PARAM2)
             position = it.getInt(ARG_PARAM3)
         }
@@ -46,8 +46,8 @@ class InsertFlagment : Fragment() {
         return inflater.inflate(R.layout.fragment_insert_flagment, container, false)
     }
 
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun backToActivity(message : String) {
+        listener?.onFragmentInteraction(message)
     }
 
     override fun onAttach(context: Context) {
@@ -64,12 +64,17 @@ class InsertFlagment : Fragment() {
         listener = null
     }
 
+    /**
+     * Processing branches by input value
+     * "create" : 0 "search" : 1 "insert" : 2 "update(delete)" : 3
+     * @param view fragment view
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val command : CreateFragmentView = when(position){
-            0 -> CreateTable(view)
-//            1 -> false
+        val command : CreateControlView = when(position){
+            1 -> CreateTable(view)
 //            2 -> false
+//            3 -> false
             else -> Dummy(view)
         }
 
@@ -78,24 +83,29 @@ class InsertFlagment : Fragment() {
         val execButton = view.findViewById<Button>(R.id.execute)
         execButton.setOnClickListener {
             view.findViewById<TextView>(R.id.insert).text = "pressed"
+            command.execute()
+            backToActivity(DbConnect.message)
         }
 
-        view.findViewById<TextView>(R.id.insert).text = "$param1 : $tName"
-
+        view.findViewById<TextView>(R.id.insert).text = "$dbName : $tName"
     }
 
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onFragmentInteraction(message : String)
     }
 
+    /**
+     * To initialize this fragment, Use this object
+     *
+     */
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, tName : String, position : Int) =
+        fun newInstance(dbName: String, tName : String, position : Int) =
             InsertFlagment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM1, dbName)
                     putString(ARG_PARAM2, tName)
                     putInt(ARG_PARAM3, position)
                 }
