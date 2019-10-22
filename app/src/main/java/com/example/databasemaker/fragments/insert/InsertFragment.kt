@@ -12,8 +12,7 @@ import android.widget.TextView
 import com.example.databasemaker.DbConnect
 
 import com.example.databasemaker.R
-import com.example.databasemaker.executors.CreateTable
-import com.example.databasemaker.executors.Dummy
+import com.example.databasemaker.executors.*
 import com.example.databasemaker.interfaces.CreateControlView
 import com.example.databasemaker.openHelper.SubOpenHelper
 
@@ -21,7 +20,7 @@ private const val ARG_PARAM1 = "dbName"
 private const val ARG_PARAM2 = "tName"
 private const val ARG_PARAM3 = "position"
 
-class InsertFlagment : Fragment() {
+class InsertFragment : Fragment() {
 
     private var dbName: String? = null
     private var tName: String? = null
@@ -66,15 +65,16 @@ class InsertFlagment : Fragment() {
 
     /**
      * Processing branches by input value
-     * "create" : 0 "search" : 1 "insert" : 2 "update(delete)" : 3
+     * "create" : 1 "search" : 2 "insert" : 3 "update(delete)" : 4
      * @param view fragment view
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val command : CreateControlView = when(position){
             1 -> CreateTable(view)
-//            2 -> false
-//            3 -> false
+            2 -> SelectTable(view, tName)
+            3 -> InsertRecord(view, tName)
+            5 -> InputSQL(view)
             else -> Dummy(view)
         }
 
@@ -103,7 +103,7 @@ class InsertFlagment : Fragment() {
 
         @JvmStatic
         fun newInstance(dbName: String, tName : String, position : Int) =
-            InsertFlagment().apply {
+            InsertFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, dbName)
                     putString(ARG_PARAM2, tName)

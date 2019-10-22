@@ -1,20 +1,17 @@
 package com.example.databasemaker
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.databasemaker.common.createSpinner
-import com.example.databasemaker.fragments.insert.InsertFlagment
+import com.example.databasemaker.fragments.insert.InsertFragment
 import com.example.databasemaker.interfaces.Syncable
 import com.example.databasemaker.openHelper.SubOpenHelper
-import kotlinx.android.synthetic.main.activity_data_control.*
 
-class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInteractionListener,Syncable {
+class DataControlActivity : AppCompatActivity(), InsertFragment.OnFragmentInteractionListener,Syncable {
 
     private val WC = ViewGroup.LayoutParams.WRAP_CONTENT
     var fragmentOn = false
@@ -35,7 +32,8 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
             getString(R.string.create),
             getString(R.string.search),
             getString(R.string.insert),
-            getString(R.string.update)
+            getString(R.string.update),
+            "SQL"
         )
 
         val messageView = findViewById<TextView>(R.id.message)
@@ -50,6 +48,16 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
         createSpinner(applicationContext, view = findViewById(R.id.commands), objects = commands, listener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedCommand = position
+                if(position == 1 || position == 5){
+                    val frag = InsertFragment.newInstance(DbConnect.dbName, "new", selectedCommand)
+                    val tran = supportFragmentManager.beginTransaction()
+                    if(!fragmentOn)
+                        tran.add(R.id.frag, frag)
+                    else
+                        tran.replace(R.id.frag, frag)
+                    fragmentOn = true
+                    tran.commit()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -62,9 +70,15 @@ class DataControlActivity : AppCompatActivity(),InsertFlagment.OnFragmentInterac
      */
     override fun setSpinnerList(result: MutableList<String>) {
         if(result.isEmpty()) result.add("nothing")
+
+        // remove "select" and "info_table"
+        val tableNames = mutableListOf<String>()
+        for(index in result.indices){
+            if(index > 1) tableNames.add(result[index])
+        }
         createSpinner(applicationContext, view = findViewById(R.id.tables), objects = result, listener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val frag = InsertFlagment.newInstance(DbConnect.dbName, result[position], selectedCommand)
+                val frag = InsertFragment.newInstance(DbConnect.dbName, result[position], selectedCommand)
                 val tran = supportFragmentManager.beginTransaction()
                 if(!fragmentOn)
                     tran.add(R.id.frag, frag)

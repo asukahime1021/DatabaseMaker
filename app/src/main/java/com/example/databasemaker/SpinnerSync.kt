@@ -40,6 +40,7 @@ class SpinnerSync(private val helper : SQLiteOpenHelper, private val activity : 
                 while (c.moveToNext()) {
                     result.add(c.getString(0))
                 }
+                c.close()
 
                 activity.setSpinnerList(result)
             } catch (e: SQLException) {
