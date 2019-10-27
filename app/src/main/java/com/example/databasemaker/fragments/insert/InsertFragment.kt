@@ -1,6 +1,7 @@
 package com.example.databasemaker.fragments.insert
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.widget.TextView
 import com.example.databasemaker.DbConnect
 
 import com.example.databasemaker.R
+import com.example.databasemaker.SelectActivity
 import com.example.databasemaker.executors.*
 import com.example.databasemaker.interfaces.CreateControlView
 import com.example.databasemaker.openHelper.SubOpenHelper

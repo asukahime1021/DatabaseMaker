@@ -1,11 +1,14 @@
 package com.example.databasemaker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.TextView
+import android.widget.Toast
+import com.example.databasemaker.common.SQLCommands
 import com.example.databasemaker.common.createSpinner
 import com.example.databasemaker.fragments.insert.InsertFragment
 import com.example.databasemaker.interfaces.Syncable
@@ -21,7 +24,9 @@ class DataControlActivity : AppCompatActivity(), InsertFragment.OnFragmentIntera
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_control)
 
-        if(intent.getIntExtra("restart", 0) != 1)
+        if(intent.getIntExtra("restart", 0) == 1)
+            Toast.makeText(applicationContext, DbConnect.message, Toast.LENGTH_SHORT).show()
+        else
             DbConnect.message = ""
 
         val dbName = DbConnect.dbName
@@ -74,11 +79,11 @@ class DataControlActivity : AppCompatActivity(), InsertFragment.OnFragmentIntera
         // remove "select" and "info_table"
         val tableNames = mutableListOf<String>()
         for(index in result.indices){
-            if(index > 1) tableNames.add(result[index])
+            if(index > 0) tableNames.add(result[index])
         }
-        createSpinner(applicationContext, view = findViewById(R.id.tables), objects = result, listener = object : AdapterView.OnItemSelectedListener{
+        createSpinner(applicationContext, view = findViewById(R.id.tables), objects = tableNames, listener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val frag = InsertFragment.newInstance(DbConnect.dbName, result[position], selectedCommand)
+                val frag = InsertFragment.newInstance(DbConnect.dbName, tableNames[position], selectedCommand)
                 val tran = supportFragmentManager.beginTransaction()
                 if(!fragmentOn)
                     tran.add(R.id.frag, frag)
@@ -98,8 +103,13 @@ class DataControlActivity : AppCompatActivity(), InsertFragment.OnFragmentIntera
     }
 
     override fun onFragmentInteraction(message : String) {
-        finish()
-        intent.putExtra("restart", 1)
-        startActivity(intent)
+        if(DbConnect.command == SQLCommands.SELECT){
+            val selectIntent = Intent(applicationContext, SelectActivity::class.java)
+            startActivity(selectIntent)
+        }else {
+            finish()
+            intent.putExtra("restart", 1)
+            startActivity(intent)
+        }
     }
 }

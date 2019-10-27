@@ -71,6 +71,8 @@ class InputSQL(override val view: View) : CreateControlView {
             for(command in SQLCommands.values()){
                 if(sqlHead.matches(command.reg))
                     executor.executeSQL(sql, command)
+                if(command == SQLCommands.SELECT)
+                    break
             }
         }
     }
